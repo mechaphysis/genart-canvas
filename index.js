@@ -9,7 +9,8 @@ const settings = {
 };
 
 const sketch = () => {
-  const palette = random.pick(palettes);
+  const colorCount = random.rangeFloor(2, 5);
+  const palette = random.shuffle(random.pick(palettes)).slice(0, colorCount);
 
   const createGrid = count => {
     const points = [];
