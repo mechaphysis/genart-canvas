@@ -21,7 +21,7 @@ const sketch = () => {
         points.push({
           color: random.pick(palette),
           position: [i, j],
-          radius: Math.abs(random.gaussian()) // gaussian is a more 'organic' randomness
+          radius: Math.abs(random.gaussian() * 0.5) // gaussian is a more 'organic' randomness
         });
       }
     }
@@ -30,7 +30,7 @@ const sketch = () => {
 
   // Set a deterministic seed for random, it can be a string or a number:
   random.setSeed("lorem ipsum");
-  const points = createGrid(40).filter(() => random.value() > 0.5);
+  const points = createGrid(70).filter(() => random.value() > 0.5);
 
   /**
    * margin together with lerp (linear interpolation)
