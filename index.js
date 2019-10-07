@@ -28,7 +28,8 @@ const sketch = () => {
         points.push({
           color: random.pick(palette),
           position: [i, j],
-          radius // gaussian is a more 'organic' randomness
+          radius, // gaussian is a more 'organic' randomness
+          rotation: random.noise2D(i, j)
         });
       }
     }
@@ -36,7 +37,7 @@ const sketch = () => {
   };
 
   // Set a deterministic seed for random, it can be a string or a number:
-  const points = createGrid(70).filter(() => random.value() > 0.5);
+  const points = createGrid(50).filter(() => random.value() > 0.5);
 
   /**
    * margin together with lerp (linear interpolation)
@@ -56,7 +57,8 @@ const sketch = () => {
       const {
         position: [i, j],
         radius,
-        color
+        color,
+        rotation
       } = pointData;
       const x = lerp(margin, width - margin, i);
       const y = lerp(margin, height - margin, j);
@@ -69,9 +71,13 @@ const sketch = () => {
         context.fill();
         context.stroke();
        */
+      context.save();
       context.fillStyle = color;
-      context.font = '100px "Arial"';
-      context.fillText("A", x, y);
+      context.font = `${radius * 150}px "Helvetica"`;
+      context.translate(x, y);
+      context.rotate(rotation);
+      context.fillText("=", 0, 0);
+      context.restore();
     });
   };
 };
