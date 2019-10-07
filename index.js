@@ -25,7 +25,6 @@ const sketch = () => {
          * negative numbers as radius, as this will cause an error
          */
         const radius = Math.abs(random.noise2D(i, j));
-        console.log("--print radius", radius);
         points.push({
           color: random.pick(palette),
           position: [i, j],
@@ -37,7 +36,6 @@ const sketch = () => {
   };
 
   // Set a deterministic seed for random, it can be a string or a number:
-  random.setSeed("lorem ipsum");
   const points = createGrid(70).filter(() => random.value() > 0.5);
 
   /**
@@ -63,11 +61,17 @@ const sketch = () => {
       const x = lerp(margin, width - margin, i);
       const y = lerp(margin, height - margin, j);
 
-      context.beginPath();
-      context.arc(x, y, radius * width * 0.015, 0, Math.PI * 2, false);
+      /**
+       *
+        context.beginPath();
+        context.arc(x, y, radius * width * 0.015, 0, Math.PI * 2, false);
+        context.fillStyle = color;
+        context.fill();
+        context.stroke();
+       */
       context.fillStyle = color;
-      context.fill();
-      context.stroke();
+      context.font = '100px "Arial"';
+      context.fillText("A", x, y);
     });
   };
 };
