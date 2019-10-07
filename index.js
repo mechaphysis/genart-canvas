@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable newline-after-var */
 import canvasSketch from "canvas-sketch";
 import { lerp } from "canvas-sketch-util/math";
@@ -18,10 +19,17 @@ const sketch = () => {
       for (let y = 0; y < count; y++) {
         const i = x / (count - 1);
         const j = y / (count - 1);
+        /**
+         * Noise 2D gives us an even more organic feeling to the randomness.
+         * Don't forget to wrap it in absolute (Math.abs) to avoid passing
+         * negative numbers as radius, as this will cause an error
+         */
+        const radius = Math.abs(random.noise2D(i, j));
+        console.log("--print radius", radius);
         points.push({
           color: random.pick(palette),
           position: [i, j],
-          radius: Math.abs(random.gaussian() * 0.5) // gaussian is a more 'organic' randomness
+          radius // gaussian is a more 'organic' randomness
         });
       }
     }
