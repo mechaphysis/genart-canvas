@@ -45,6 +45,8 @@ const sketch = () => {
    * the canvas
    */
   const margin = 200;
+
+  /** Rendering in canvas: */
   return ({ context, width, height }) => {
     // Change background to a nice dark-bluish gray
     //context.fillStyle = "hsl(227, 21%, 13%)";
