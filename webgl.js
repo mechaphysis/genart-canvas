@@ -37,8 +37,8 @@ const sketch = ({ context }) => {
 
   const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshPhysicalMaterial({
-      color: "white",
+    new THREE.MeshBasicMaterial({
+      color: "green",
       roughness: 0.75,
       flatShading: true
     })
