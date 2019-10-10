@@ -29,9 +29,6 @@ const sketch = ({ context }) => {
   camera.position.set(2, 2, -4);
   camera.lookAt(new THREE.Vector3());
 
-  // Setup camera controller
-  const controls = new THREE.OrbitControls(camera, context.canvas);
-
   // Setup your scene
   const scene = new THREE.Scene();
 
@@ -57,12 +54,10 @@ const sketch = ({ context }) => {
     // Update & render your scene here
     render({ time }) {
       mesh.rotation.y = time * ((10 * Math.PI) / 180);
-      controls.update();
       renderer.render(scene, camera);
     },
     // Dispose of events & renderer for cleaner hot-reloading
     unload() {
-      controls.dispose();
       renderer.dispose();
     }
   };
