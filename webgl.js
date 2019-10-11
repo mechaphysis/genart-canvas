@@ -5,6 +5,7 @@ global.THREE = require("three");
 require("three/examples/js/controls/OrbitControls");
 
 const canvasSketch = require("canvas-sketch");
+const random = require("canvas-sketch-util/random");
 
 const settings = {
   // Make the loop animated
@@ -39,7 +40,11 @@ const sketch = ({ context }) => {
         flatShading: true
       })
     );
-    mesh.position.set(Math.random(), Math.random(), Math.random());
+    mesh.position.set(
+      random.range(-1, 1),
+      random.range(-1, 1),
+      random.range(-1, 1)
+    );
     mesh.scale.multiplyScalar(0.1);
     scene.add(mesh);
   }
@@ -54,7 +59,7 @@ const sketch = ({ context }) => {
       const aspect = viewportWidth / viewportHeight;
 
       // Ortho zoom
-      const zoom = 1.0;
+      const zoom = 2;
 
       // Bounds
       camera.left = -zoom * aspect;
