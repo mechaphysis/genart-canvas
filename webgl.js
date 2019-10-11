@@ -31,9 +31,14 @@ const sketch = ({ context }) => {
   // Setup your scene
   const scene = new THREE.Scene();
 
+  /* 
+  For efficiency we only create the Box Geometry once, 
+  and reuse it throrough the loop
+  */
+  const box = new THREE.BoxGeometry(1, 1, 1);
   for (let index = 0; index < 10; index++) {
     const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(1, 1, 1),
+      box,
       new THREE.MeshBasicMaterial({
         color: "green",
         roughness: 0.75,
