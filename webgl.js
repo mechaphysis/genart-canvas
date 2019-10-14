@@ -42,7 +42,7 @@ const sketch = ({ context }) => {
   for (let index = 0; index < 40; index++) {
     const mesh = new THREE.Mesh(
       box,
-      new THREE.MeshBasicMaterial({
+      new THREE.MeshStandardMaterial({
         color: random.pick(palette),
         roughness: 0.75,
         flatShading: true
@@ -62,6 +62,8 @@ const sketch = ({ context }) => {
     scene.add(mesh);
   }
 
+  const light = new THREE.DirectionalLight("red", 1);
+  scene.add(light);
   // draw each frame
   return {
     // Handle resize events here
