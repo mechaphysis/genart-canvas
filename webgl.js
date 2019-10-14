@@ -6,6 +6,7 @@ require("three/examples/js/controls/OrbitControls");
 
 const canvasSketch = require("canvas-sketch");
 const random = require("canvas-sketch-util/random");
+const palettes = require("nice-color-palettes");
 
 const settings = {
   // Make the loop animated
@@ -36,11 +37,13 @@ const sketch = ({ context }) => {
   and reuse it throrough the loop
   */
   const box = new THREE.BoxGeometry(1, 1, 1);
+
+  const palette = random.pick(palettes);
   for (let index = 0; index < 40; index++) {
     const mesh = new THREE.Mesh(
       box,
       new THREE.MeshBasicMaterial({
-        color: "green",
+        color: random.pick(palette),
         roughness: 0.75,
         flatShading: true
       })
