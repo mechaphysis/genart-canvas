@@ -36,7 +36,7 @@ const sketch = ({ context }) => {
   and reuse it throrough the loop
   */
   const box = new THREE.BoxGeometry(1, 1, 1);
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 40; index++) {
     const mesh = new THREE.Mesh(
       box,
       new THREE.MeshBasicMaterial({
@@ -50,7 +50,12 @@ const sketch = ({ context }) => {
       random.range(-1, 1),
       random.range(-1, 1)
     );
-    mesh.scale.multiplyScalar(0.1);
+    mesh.scale.set(
+      random.range(-1, 1),
+      random.range(-1, 1),
+      random.range(-1, 1)
+    );
+    mesh.scale.multiplyScalar(0.3);
     scene.add(mesh);
   }
 
