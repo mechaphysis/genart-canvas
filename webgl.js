@@ -62,7 +62,11 @@ const sketch = ({ context }) => {
     scene.add(mesh);
   }
 
-  const light = new THREE.DirectionalLight("red", 1);
+  // ambient light makes shadows less "harsh"
+  scene.add(new THREE.AmbientLight("hsl(0,0%,20%)")); //soft gray
+
+  const light = new THREE.DirectionalLight("white", 1);
+  light.position.set(2, 2, 4);
   scene.add(light);
   // draw each frame
   return {
