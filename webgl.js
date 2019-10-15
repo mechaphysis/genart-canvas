@@ -9,6 +9,9 @@ const random = require("canvas-sketch-util/random");
 const palettes = require("nice-color-palettes");
 
 const settings = {
+  dimensions: [512, 512],
+  fps: 24,
+  duration: 4,
   // Make the loop animated
   animate: true,
   // Get a WebGL canvas rather than 2D
@@ -39,7 +42,7 @@ const sketch = ({ context }) => {
   const box = new THREE.BoxGeometry(1, 1, 1);
 
   const palette = random.pick(palettes);
-  for (let index = 0; index < 40; index++) {
+  for (let index = 0; index < 60; index++) {
     const mesh = new THREE.Mesh(
       box,
       new THREE.MeshStandardMaterial({
@@ -96,7 +99,9 @@ const sketch = ({ context }) => {
       camera.updateProjectionMatrix();
     },
     // Update & render your scene here
-    render({ time }) {
+    render({ playhead }) {
+      scene.rotation.z = Math.sin(playhead * Math.PI * 2);
+      //scene.mesh.scale.set(playhead);
       renderer.render(scene, camera);
     },
     // Dispose of events & renderer for cleaner hot-reloading
