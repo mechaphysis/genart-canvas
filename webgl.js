@@ -7,6 +7,8 @@ require("three/examples/js/controls/OrbitControls");
 const canvasSketch = require("canvas-sketch");
 const random = require("canvas-sketch-util/random");
 const palettes = require("nice-color-palettes");
+const eases = require("eases");
+const bezierEasing = require("bezier-easing");
 
 const settings = {
   dimensions: [512, 512],
@@ -71,6 +73,12 @@ const sketch = ({ context }) => {
   const light = new THREE.DirectionalLight("white", 1);
   light.position.set(2, 2, 4);
   scene.add(light);
+
+  /**
+   * The values provided for the constructor can be
+   * explored and generated through cubic-bezier.com
+   */
+  const easeFn = bezierEasing(0.17, 0.67, 0.88, 0);
   // draw each frame
   return {
     // Handle resize events here
@@ -100,7 +108,8 @@ const sketch = ({ context }) => {
     },
     // Update & render your scene here
     render({ playhead }) {
-      scene.rotation.z = Math.sin(playhead * Math.PI * 2);
+      //exponential in out ease is a sharp ease-in-out
+      scene.rotation.z = easeFn(Math.sin(playhead * Math.PI));
       //scene.mesh.scale.set(playhead);
       renderer.render(scene, camera);
     },
