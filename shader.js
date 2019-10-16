@@ -1,15 +1,15 @@
-const canvasSketch = require('canvas-sketch');
-const createShader = require('canvas-sketch-util/shader');
-const glsl = require('glslify');
+const canvasSketch = require("canvas-sketch");
+const createShader = require("canvas-sketch-util/shader");
+const glsl = require("glslify");
 
 // Setup our sketch
 const settings = {
-  context: 'webgl',
+  context: "webgl",
   animate: true
 };
 
 // Your glsl code
-const frag = glsl(`
+const frag = glsl(/* glsl */ `
   precision highp float;
 
   uniform float time;
