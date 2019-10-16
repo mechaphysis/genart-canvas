@@ -13,13 +13,19 @@ const frag = glsl(/* glsl */ `
   precision highp float;
 
   uniform float time;
+  uniform float aspectRatio;
   varying vec2 vUv;
 
   void main () {
-    vec3 colorA = vec3(1.0, 0.0, 0.0);
-    vec3 colorB = vec3(0.0, 1.0, 0.0);
-    vec3 color = mix(colorA, colorB, vUv.x);
-    gl_FragColor = vec4(color, 1.0); 
+    vec3 colorA = sin(time) + vec3(1.0, 0.0, 0.0);
+    vec3 colorB = cos(time * 0.5) + vec3(0.0, 1.0, 0.0);
+
+    vec2 center = vUv - 0.5;
+    center.x *= aspectRatio;
+    float distance = length(center);
+    vec3 color = mix(colorA, colorB, vUv.y + vUv.x * sin(time));
+    float alpha = smoothstep(0.25075, 0.25, distance);
+    gl_FragColor = vec4(color, alpha); 
   }
 `);
 
@@ -27,6 +33,7 @@ const frag = glsl(/* glsl */ `
 const sketch = ({ gl }) => {
   // Create the shader and return it
   return createShader({
+    clearColor: false,
     // Pass along WebGL context
     gl,
     // Specify fragment and/or vertex shader strings
@@ -34,7 +41,8 @@ const sketch = ({ gl }) => {
     // Specify additional uniforms to pass down to the shaders
     uniforms: {
       // Expose props from canvas-sketch
-      time: ({ time }) => time
+      time: ({ time }) => time,
+      aspectRatio: ({ width, height }) => width / height
     }
   });
 };
