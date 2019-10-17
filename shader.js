@@ -16,16 +16,14 @@ const frag = glsl(/* glsl */ `
   uniform float aspectRatio;
   varying vec2 vUv;
 
+  #pragma glslify: noise = require('glsl-noise/simplex/3d')
+
   void main () {
-    vec3 colorA = sin(time) + vec3(1.0, 0.0, 0.0);
-    vec3 colorB = cos(time * 0.5) + vec3(0.0, 1.0, 0.0);
 
     vec2 center = vUv - 0.5;
-    center.x *= aspectRatio;
-    float distance = length(center);
-    vec3 color = mix(colorA, colorB, vUv.y + vUv.x * sin(time));
-    float alpha = smoothstep(0.25075, 0.25, distance);
-    gl_FragColor = vec4(color, alpha); 
+    center *= aspectRatio;
+    float n = noise(vec3(center * 1.0, time));
+    gl_FragColor = vec4(vec3(n), 1.0); 
   }
 `);
 
