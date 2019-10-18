@@ -9,6 +9,7 @@ const random = require("canvas-sketch-util/random");
 const palettes = require("nice-color-palettes");
 const eases = require("eases");
 const bezierEasing = require("bezier-easing");
+const glslify = require("glslify");
 
 const settings = {
   dimensions: [512, 512],
@@ -43,14 +44,43 @@ const sketch = ({ context }) => {
   */
   const box = new THREE.BoxGeometry(1, 1, 1);
 
+  /**
+   * Defining Shader properties for ShaderMaterial:
+   */
+
+  const fragmentShader = `
+    varying vec2 vUv;
+    uniform vec3 color;
+    void main(){
+      gl_FragColor = vec4(vUv.x *color, 1.0);
+    }
+  `;
+
+  const vertexShader = glslify(`
+    varying vec2 vUv;
+    uniform float time;
+
+    #pragma glslify: noise = require('glsl-noise/simplex/4d');
+    
+    void main() {
+      vUv = uv; 
+      vec3 pos = position.xyz;
+      pos *= noise(vec4(position.xyz*time,time)) * 10.0;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }
+  `);
   const palette = random.pick(palettes);
+  const cubes = [];
   for (let index = 0; index < 60; index++) {
     const mesh = new THREE.Mesh(
       box,
-      new THREE.MeshStandardMaterial({
-        color: random.pick(palette),
-        roughness: 0.75,
-        flatShading: true
+      new THREE.ShaderMaterial({
+        fragmentShader,
+        vertexShader,
+        uniforms: {
+          color: { value: new THREE.Color(random.pick(palette)) },
+          time: { value: 0 }
+        }
       })
     );
     mesh.position.set(
@@ -65,6 +95,7 @@ const sketch = ({ context }) => {
     );
     mesh.scale.multiplyScalar(0.3);
     scene.add(mesh);
+    cubes.push(mesh);
   }
 
   // ambient light makes shadows less "harsh"
@@ -107,10 +138,12 @@ const sketch = ({ context }) => {
       camera.updateProjectionMatrix();
     },
     // Update & render your scene here
-    render({ playhead }) {
+    render({ playhead, time }) {
       //exponential in out ease is a sharp ease-in-out
       scene.rotation.z = easeFn(Math.sin(playhead * Math.PI));
-      //scene.mesh.scale.set(playhead);
+      cubes.forEach(cube => {
+        cube.material.uniforms.time.value = Math.cos(playhead * Math.PI * 2);
+      });
       renderer.render(scene, camera);
     },
     // Dispose of events & renderer for cleaner hot-reloading
